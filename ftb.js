@@ -1,4 +1,15 @@
 var fs = require('fs');
+var path = require('path');
+
+//系统全局变量
+var global = (function(){
+    return {
+        "baseurl": "http://myftb.com/",
+        "dataType": "json",
+        "type": "POST",
+        "output": "output.js"
+    };
+})();
 
 //参数获取
 var arguments = process.argv.splice(2);
@@ -43,12 +54,19 @@ funcArr.forEach(function(func){
 		ajaxArgs.push("\""+arg+"\":"+arg);
 	});
 	ajaxJS += "function "+func.name+"(";
+    func.args.push("cb");
 	ajaxJS += (func.args).join(",");
-	ajaxJS += "){$.ajax({url:'',type:'',data:{"+ajaxArgs.join(",")+"}})}";
+	ajaxJS += "){$.ajax({url:'"+global.baseurl+func.name;
+    ajaxJS += "',type:'"+global.type;
+    ajaxJS += "',dataType:'"+global.dataType;
+    ajaxJS += "',data:{"+ajaxArgs.join(",")+"},";
+    ajaxJS += "success:function(response){cb(response);}});}";
 });
 
 //写入文件
-console.log(ajaxJS);
+fs.writeFile(path.join(__dirname, global.output), ajaxJS, function (err) {
+    if (err) throw err;
+});
 
 function analysis(filePath){
 	var data = fs.readFileSync(filePath, "utf-8");
