@@ -13,7 +13,26 @@ ftb即为了打通前后端所做的努力。
 * 编写全局配置
 * 后端直接进行业务开发
 * 按ftb注释规范进行注释
+
+```php
+	//@ftb asdf
+	/**
+	 * @params a ftb
+	 * @params b asdf asdf  ftb
+	 */
+    function action(){
+    }
+	//@ftb
+    function anotherAction(){
+    }
+```
+
 * 扫描系统生成javascript交互代码
+
+```sh
+node ftb.js .
+```
+
 * 前端引入使用
 
 ###todo
