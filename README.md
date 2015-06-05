@@ -57,6 +57,19 @@ node ftb.js .
 
 * 前端引入使用
 
+```html
+<script src="./output.js"></script>
+<script>
+    var a, b;
+    asdf(a, b, function(response){
+            //do callback
+            });
+    anotherAction(function(response){
+            //do callback
+            });
+</script>
+```
+
 ###todo
 * ~~引入全局配置~~ done
 * ~~压缩模式/非压缩模式~~ done
