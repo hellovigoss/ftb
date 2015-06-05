@@ -8,7 +8,7 @@ class Test extends Controller
 	}
 	//@ftb asdf
 	/**
-	 * @params a ftb
+	 * @params $a ftb
 	 * @params b asdf asdf  ftb
 	 */
 	function action(){

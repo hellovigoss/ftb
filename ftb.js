@@ -1,21 +1,27 @@
+/**
+ * ftb tools main js
+ * @author: hellovigoss@gmail.com
+ * @lol~
+ */
 var fs = require('fs');
 var path = require('path');
-
-//系统全局变量
-var global = (function(){
-    return {
-        "baseurl": "http://myftb.com/",
-    "dataType": "json",
-    "type": "POST",
-    "output": "output.js"
-    };
-})();
+var properties = require('./properties.js');
 
 //参数获取
 var arguments = process.argv.splice(2);
 if(arguments.length < 1){
-    console.log('Usage: node ftb.js path');
+    console.log('Usage: node ftb.js path[  config_file_path]');
 }
+
+
+//读取系统全局配置文件
+var globalConfig = (function(argFilePath){
+    if((typeof argFilePath) == "undefined"){
+        argFilePath = "./config.properties";
+    }
+    return properties.parseproperties(argFilePath, "UTF-8");
+})(arguments[1]);
+
 //转换目录
 var dirPath = arguments[0];
 //系统所有转换结果
@@ -56,15 +62,15 @@ funcArr.forEach(function(func){
     ajaxJS += "function "+func.name+"(";
     func.args.push("cb");
     ajaxJS += (func.args).join(",");
-    ajaxJS += "){$.ajax({url:'"+global.baseurl+func.name;
-    ajaxJS += "',type:'"+global.type;
-    ajaxJS += "',dataType:'"+global.dataType;
+    ajaxJS += "){$.ajax({url:'"+globalConfig.baseurl+func.name;
+    ajaxJS += "',type:'"+globalConfig.type;
+    ajaxJS += "',dataType:'"+globalConfig.dataType;
     ajaxJS += "',data:{"+ajaxArgs.join(",")+"},";
     ajaxJS += "success:function(response){cb(response);}});}";
 });
 
 //写入文件
-fs.writeFile(path.join(__dirname, global.output), ajaxJS, function (err) {
+fs.writeFile(path.join(__dirname, globalConfig.output), ajaxJS, function (err) {
     if (err) throw err;
 });
 
