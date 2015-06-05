@@ -13,10 +13,11 @@ ftb即为了打通前后端所做的努力。
 * 编写全局配置
 
 ```shell
-baseurl=http://myftb.com/
-dataType=json
-type=POST
-output=output.js
+baseurl=http://myftb.com/ #项目根地址
+dataType=json             #ajax数据交互类型
+type=POST                 #ajax数据交互方式
+output=output.js          #输出文件
+compress=on|off           #是否开启输出压缩
 ```
 
 * 后端直接进行业务开发
