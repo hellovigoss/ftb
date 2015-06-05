@@ -50,6 +50,10 @@ class Test extends Controller
 node ftb.js .
 ```
 
+```javascript
+;function asdf(a,b,cb){$.ajax({url:'http://myftb.com/asdf',type:'POST',dataType:'json',data:{"a":a,"b":b},success:function(response){cb(response);}});}function anotherAction(cb){$.ajax({url:'http://myftb.com/anotherAction',type:'POST',dataType:'json',data:{},success:function(response){cb(response);}});}
+```
+
 * 前端引入使用
 
 ###todo
