@@ -9,7 +9,12 @@ ftb即为了打通前后端所做的努力。
 
 ###使用方法
 * git clone 
-* 安装运行时环境node
+
+```shell
+git clone https://github.com/hellovigoss/ftb.git
+```
+
+* 安装运行时环境node,https://nodejs.org/
 * 编写全局配置
 
 ```shell
