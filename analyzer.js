@@ -5,12 +5,21 @@
  * @lol~
  */
 var fs = require('fs');
+var global = require("./global.js");
 
 exports.analysis = function(filePath, funcArr){
+    var config = global.get();
     var data = fs.readFileSync(filePath, "utf-8");
+    //limit the shuffix of searching file
+    if(typeof config.shuffix != "undefined"){
+        var fileSplitArr = filePath.split(".");
+        if(fileSplitArr[fileSplitArr.length - 1] != config.shuffix){
+            return;
+        }
+    }    
 
     //find ftb
-    var funcRegex = /\/\/\@ftb *(.*?)\W*?(\/[\W\w]*?\/)?\W*?function *(\w*?)\(.*\)/g;
+    var funcRegex = new RegExp(config.sectionReg, "gi");
     var funcMatch;
 
     //find function name and args
@@ -22,14 +31,41 @@ exports.analysis = function(filePath, funcArr){
         else{
             funcName = funcMatch[3];
         }
-        var argRegex = /\@params?\W*(\w*).*ftb/g;
+
+        //arguments
+        var argRegex = new RegExp(config.paramsReg, "gi");
         var argMatch = '', funcArgv = [];
         while(argMatch = argRegex.exec(funcMatch[2])){
             funcArgv.push(argMatch[1]);
         }
+
+        //options
+
+        var optRegex = [];
+        var optMatch = '', funcOpt = {}, optPair = [];
+        [
+            config.typeReg,
+            config.cacheReg,
+            config.dataTypeReg,
+            config.asyncReg
+                ].forEach(function(reg){
+                    if(typeof reg != "undefined"){
+                        optRegex.push(new RegExp(reg));
+                    }
+            });
+
+        optRegex.forEach(function(reg){
+            optMatch = reg.exec(funcMatch[2]);
+            if(optMatch != null){
+                optPair.push(optMatch[1] + ":\"" + optMatch[2] + "\"");
+            }
+        });
+        funcOpt = new Function("return ({" + optPair.join(',') + "})")();
+
         funcArr.push({
             name: funcName,
-            args: funcArgv
+            args: funcArgv,
+            options: funcOpt
         });
     }
 }

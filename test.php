@@ -10,6 +10,9 @@ class Test extends Controller
 	/**
 	 * @params $a ftb
 	 * @params b asdf asdf  ftb
+     * @async true ftb
+     * @cache true ftb
+     * @type GET ftb
 	 */
 	function action(){
 	}

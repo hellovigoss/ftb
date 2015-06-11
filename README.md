@@ -18,11 +18,24 @@ git clone https://github.com/hellovigoss/ftb.git
 * 编写全局配置
 
 ```shell
+#js缺省配置
 baseurl=http://myftb.com/ #项目根地址
 dataType=json             #ajax数据交互类型
 type=POST                 #ajax数据交互方式
+cache=false               #ajax缓存配置
+async=true                #是否同步
+#自定义相关正则匹配配置
+sectionReg=\/\/\@ftb *(.*?)\W*?(\/[\W\w]*?\/)?\W*?function *(\w*?)\(.*\)    #获取ftb描述段的正则
+paramsReg=\@params?\W*(\w*).*ftb    #获取参数的循环正则
+typeReg=\@(type)\W*(\w*).*ftb    #ajax单独配置相关正则
+cacheReg=\@(cache)\W*(\w*).*ftb
+dataTypeReg=\@(dataType)\W*(\w*).*ftb
+asyncReg=\@(async)\W*(\w*).*ftb
+#系统配置
+shuffix=php               #扫描制定后缀文件
 output=output.js          #输出文件
 compress=on|off           #是否开启输出压缩
+
 ```
 
 * 后端直接进行业务开发
@@ -32,21 +45,28 @@ compress=on|off           #是否开启输出压缩
 <?php
 class Test extends Controller
 {
-	function __construct()
-	{
-		parent::__construct();
+    function __construct()
+    {
+        parent::__construct();
 
-	}
-	//@ftb asdf
-	/**
-	 * @params $a ftb
-	 * @params b asdf asdf  ftb
-	 */
-	function action(){
-	}
-	//@ftb
-	function anotherAction(){
-	}
+
+    }
+    //@ftb asdf
+    /**
+     * @params $a ftb
+     * @params b asdf asdf  ftb
+     * @async true ftb
+     * @cache true ftb
+     * @type GET ftb
+     */
+    function action(){
+
+    }
+    //@ftb
+    function anotherAction(){
+
+    }
+
 }
 ```
 
@@ -57,7 +77,32 @@ node ftb.js .
 ```
 
 ```javascript
-;function asdf(a,b,cb){$.ajax({url:'http://myftb.com/asdf',type:'POST',dataType:'json',data:{"a":a,"b":b},success:function(response){cb(response);}});}function anotherAction(cb){$.ajax({url:'http://myftb.com/anotherAction',type:'POST',dataType:'json',data:{},success:function(response){cb(response);}});}
+function asdf(a,b,cb){
+    $.ajax({
+        url:'http://myftb.com/asdf',
+        type:'GET',
+        dataType:'json',
+        cache:'true',
+        async:'true',
+        data:{"a":a,"b":b},
+        success:function(response){
+            cb(response);
+        }
+    });
+}
+function anotherAction(cb){
+    $.ajax({
+        url:'http://myftb.com/anotherAction',
+        type:'POST',
+        dataType:'json',
+        cache:'false',
+        async:'true',
+        data:{},
+        success:function(response){
+            cb(response);
+        }
+    });
+}
 ```
 
 * 前端引入使用
@@ -78,9 +123,9 @@ node ftb.js .
 ###todo
 * ~~引入全局配置~~ done
 * ~~压缩模式/非压缩模式~~ done
-* ~~使用输出模板~~ half done
+* ~~使用输出模板~~ done
 * ~~优化代码组织结构~~ done
-* 单个注释新增个性化配置项
+* ~~单个注释新增个性化配置项~~ done
 * 输出多文件，支持名字空间
 
 ###联系
