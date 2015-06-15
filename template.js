@@ -17,16 +17,19 @@ exports.compress = function(funcArr, outputDir){
     exports.output(getAjaxStr(funcArr, true), outputDir);
 }
 
+exports.flush = function(){
+    fs.writeFileSync(path.join(__dirname, (global.get()).output), "", {encoding: "utf-8", flag: "w"});
+
+}
 exports.output = function(jscode, outputDir){
     //写入文件
-    fs.writeFile(path.join(__dirname, (global.get()).output), jscode, function (err) {
+    fs.writeFile(path.join(__dirname, (global.get()).output), jscode, {encoding: "utf-8", flag: "a"}, function (err) {
         if (err) throw err;
     });
 }
 
-function getAjaxStr(funcArr, compress){
+function getAjaxStr(func, compress){
     var ajaxJS = [];
-    funcArr.forEach(function(func){
         var ajaxArgs = [];
         func.args.forEach(function(arg){
             ajaxArgs.push("\""+arg+"\":"+arg);
@@ -45,12 +48,11 @@ function getAjaxStr(funcArr, compress){
         ajaxJS.push("\t\t\t}");
         ajaxJS.push("\t\t});");
         ajaxJS.push("}");
-    });
     if(compress){
         return ";" + (ajaxJS.join("")).replace(/\t/g, "");
     }
     else{
-        return ajaxJS.join("\r\n");
+        return ajaxJS.join("\r\n") + "\r\n";
     }
 }
 function getVal(obj, key){

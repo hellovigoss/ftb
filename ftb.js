@@ -9,6 +9,7 @@ var analyzer = require('./analyzer.js');
 var dir = require("./dir.js");
 var template = require("./template.js");
 
+
 //参数获取
 var arguments = process.argv.splice(2);
 if(arguments.length < 1){
@@ -26,7 +27,6 @@ var globalConfig = (function(argFilePath){
 
 global.init(globalConfig);
 
-
 //进行文件分析获取ftb定义方法
 var funcArr = (function(dirPath){
 
@@ -36,6 +36,9 @@ var funcArr = (function(dirPath){
         dir.walk(dirPath, tmpList);
         return tmpList;
     })();
+
+    //清空输出文件内容
+    template.flush();
     
     //分析ftb元素
     var tmpList = [];
@@ -45,11 +48,3 @@ var funcArr = (function(dirPath){
     
     return tmpList;
 })(arguments[0]);
-
-//拼接js代码
-if(globalConfig.compress == "on"){
-    template.compress(funcArr, globalConfig.output);
-}
-else{
-    template.normal(funcArr, globalConfig.output);
-}
