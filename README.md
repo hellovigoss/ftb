@@ -127,6 +127,7 @@ function anotherAction(cb){
 * ~~优化代码组织结构~~ done
 * ~~单个注释新增个性化配置项~~ done
 * 输出多文件，支持名字空间
+* 目录遍历读取采取异步模式增加大项目生成效率
 
 ###联系
 hellovigoss@gmail.com
