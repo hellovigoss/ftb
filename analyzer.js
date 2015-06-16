@@ -20,7 +20,7 @@ exports.analysis = function(filePath, funcArr){
     }    
 
     //read file async
-    fs.readFile(filePath, "utf-8", function(err, data){
+    fs.readFile(filePath, config.encoding, function(err, data){
 
         //find ftb
         var funcRegex = new RegExp(config.sectionReg, "gi");

@@ -18,12 +18,12 @@ exports.compress = function(funcArr, outputDir){
 }
 
 exports.flush = function(){
-    fs.writeFileSync(path.join(__dirname, (global.get()).output), "", {encoding: "utf-8", flag: "w"});
+    fs.writeFileSync(path.join(__dirname, (global.get()).output), "", {encoding: (global.get()).encoding, flag: "w"});
 
 }
+
 exports.output = function(jscode, outputDir){
-    //写入文件
-    fs.writeFile(path.join(__dirname, (global.get()).output), jscode, {encoding: "utf-8", flag: "a"}, function (err) {
+    fs.writeFile(path.join(__dirname, (global.get()).output), jscode, {encoding: (global.get()).encoding, flag: "a"}, function (err) {
         if (err) throw err;
     });
 }
@@ -55,6 +55,7 @@ function getAjaxStr(func, compress){
         return ajaxJS.join("\r\n") + "\r\n";
     }
 }
+
 function getVal(obj, key){
     var val = eval("obj." + key);
     if(typeof val == "undefined"){
