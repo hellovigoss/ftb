@@ -6,8 +6,9 @@ class Test extends Controller
 		parent::__construct();
 
 	}
-	//@ftb asdf
+	//@ftb actionAlias
 	/**
+     * @ns com.iflytek.ftb.demo ftb
 	 * @params $a ftb
 	 * @params b asdf asdf  ftb
      * @async true ftb

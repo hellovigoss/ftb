@@ -48,6 +48,7 @@ exports.analysis = function(filePath, funcArr){
             var optRegex = [];
             var optMatch = '', funcOpt = {}, optPair = [];
             [
+                config.namespaceReg,
                 config.typeReg,
                 config.cacheReg,
                 config.dataTypeReg,

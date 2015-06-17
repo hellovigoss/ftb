@@ -40,7 +40,9 @@ asyncReg=\@(async)\W*(\w*).*ftb
 shuffix=php               #扫描制定后缀文件
 output=output.js          #输出文件
 compress=on|off           #是否开启输出压缩
-
+encoding=utf-8            #读取以及输出文件编码
+output=ftb-output         #输出目录
+outputFile=output.js      #合并输出文件名
 ```
 
 * 后端直接进行业务开发
@@ -56,8 +58,9 @@ class Test extends Controller
 
 
     }
-    //@ftb asdf
+    //@ftb actionAlias
     /**
+     * @ns com.iflytek.ftb.demo ftb
      * @params $a ftb
      * @params b asdf asdf  ftb
      * @async true ftb
@@ -79,6 +82,17 @@ class Test extends Controller
 
 ```shell
 node ftb.js .
+```
+
+* 生成目录树结构
+
+```
+.
+├── com
+│   └── iflytek
+│       └── ftb
+│           └── demo.js
+└── output.js
 ```
 
 ```javascript
@@ -108,12 +122,26 @@ function anotherAction(cb){
         }
     });
 }
+function actionAlias(a,b,cb){
+	$.ajax({
+		url:'http://myftb.com/actionAlias',
+		type:'GET',
+		dataType:'json',
+		cache:'true',
+		async:'true',
+		data:{"a":a,"b":b},
+		success:function(response){
+			cb(response);
+			}
+		});
+}
 ```
 
 * 前端引入使用
 
 ```html
-<script src="./output.js"></script>
+<script src="./ftb-output/output.js"></script>
+<script src="./ftb-output/com/iflytek/ftb/demo.js"></script>
 <script>
     var a, b;
     asdf(a, b, function(response){
@@ -122,6 +150,9 @@ function anotherAction(cb){
     anotherAction(function(response){
             //do callback
             });
+    actionAlias(a, b, function(reseponse){
+            //do callback
+        });
 </script>
 ```
 
@@ -132,7 +163,7 @@ function anotherAction(cb){
 * ~~优化代码组织结构~~ done
 * ~~单个注释新增个性化配置项~~ done
 * ~~目录遍历读取采取异步模式增加大项目生成效率~~ done
-* 输出多文件，支持名字空间
+* ~~输出多文件，支持名字空间~~ done
 * 异步读取文件配置limit，防止同时打开文件操作符过多系统出错
 
 ###联系

@@ -7,25 +7,41 @@
 var fs = require('fs');
 var path = require('path');
 var global = require("./global.js");
+var dir = require("./dir.js");
 
-exports.normal = function(funcArr, outputDir){
-    exports.output(getAjaxStr(funcArr, false), outputDir);
-
+exports.normal = function(funcArr, output){
+    exports.output(getAjaxStr(funcArr, false), getFileName(funcArr.options.ns));
 }
 
-exports.compress = function(funcArr, outputDir){
-    exports.output(getAjaxStr(funcArr, true), outputDir);
+exports.compress = function(funcArr, output){
+    exports.output(getAjaxStr(funcArr, true), getFileName(funcArr.options.ns));
 }
 
 exports.flush = function(){
-    fs.writeFileSync(path.join(__dirname, (global.get()).output), "", {encoding: (global.get()).encoding, flag: "w"});
-
+    dir.rmdir(path.join(__dirname, (global.get()).output));
 }
 
-exports.output = function(jscode, outputDir){
-    fs.writeFile(path.join(__dirname, (global.get()).output), jscode, {encoding: (global.get()).encoding, flag: "a"}, function (err) {
-        if (err) throw err;
+exports.output = function(jscode, outputFile){
+    var filePath = outputFile.split(".");
+    filePath.unshift((global.get()).output);
+    filePath.unshift(__dirname);
+    var fileName = filePath.pop();
+    fileName = filePath.pop() + "." +fileName;
+    dir.mkdir(filePath.join("/"));
+    filePath.push(fileName);
+    fs.open(filePath.join("/"), "a", function(err, fd){
+        if(err) throw err;
+        fs.writeSync(fd, jscode, 0, (global.get()).encoding);
+        fs.close(fd);
     });
+}
+
+function getFileName(namespace){
+    var outputFile = (global.get()).outputFile;
+    if(typeof namespace != "undefined"){
+        outputFile = namespace + ".js";
+    }
+    return outputFile;
 }
 
 function getAjaxStr(func, compress){
