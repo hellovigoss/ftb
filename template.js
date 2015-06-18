@@ -29,11 +29,7 @@ exports.output = function(jscode, outputFile){
     fileName = filePath.pop() + "." +fileName;
     dir.mkdir(filePath.join("/"));
     filePath.push(fileName);
-    fs.open(filePath.join("/"), "a", function(err, fd){
-        if(err) throw err;
-        fs.writeSync(fd, jscode, 0, (global.get()).encoding);
-        fs.close(fd);
-    });
+    fs.appendFileSync(filePath.join("/"), jscode, {encoding: (global.get()).encoding});
 }
 
 function getFileName(namespace){
