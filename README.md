@@ -167,5 +167,5 @@ function actionAlias(a,b,cb){
 * 异步读取文件配置limit，防止同时打开文件操作符过多系统出错
 
 ###联系
-hellovigoss@gmail.com
+hellovigoss@gmail.com   
 scgywx@gmail.com
